@@ -1,0 +1,12 @@
+substitutions:
+  name: "ean-reader"
+  friendly_name: "EAN Reader"
+  hidden_ssid: "false"
+  log_level: DEBUG
+
+dashboard_import:
+  package_import_url: github://https://github.com/JayGray/ean-reader@main
+  import_full_config: false # or true
+
+packages:
+  device_base: !include common/ean-reader-base.yaml
