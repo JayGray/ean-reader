@@ -4,7 +4,7 @@ esphome:
   friendly_name: ${friendly_name}
   name_add_mac_suffix: True
   project:
-    name: EanReader
+    name: JayGray.EanReader
     version: "0.0.1"
 
 esp32:
