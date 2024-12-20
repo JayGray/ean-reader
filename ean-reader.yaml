@@ -10,3 +10,4 @@ dashboard_import:
 
 packages:
   device_base: !include common/ean-reader-base.yaml
+  gm60_base: !include common/gm60-base.yaml

@@ -1,0 +1,15 @@
+uart:
+  id: uart_bus
+  tx_pin: GPIO17
+  rx_pin: GPIO16
+  baud_rate: 115200
+  debug:
+    direction: BOTH
+    dummy_receiver: true
+    after:
+      delimiter: "\r\n"
+    sequence:
+      - lambda: |-
+          UARTDebug::log_string(direction, bytes);
+          std::string str(bytes.begin(), bytes.end());
+          id(uart_ean).publish_state(str);
