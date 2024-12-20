@@ -5,7 +5,7 @@ substitutions:
   log_level: DEBUG
 
 dashboard_import:
-  package_import_url: github://https://github.com/JayGray/ean-reader@main
+  package_import_url: github://JayGray/ean-reader/ean-reader.yaml@main
   import_full_config: false # or true
 
 packages:
