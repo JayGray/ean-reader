@@ -12,4 +12,3 @@ uart:
       - lambda: |-
           UARTDebug::log_string(direction, bytes);
           std::string str(bytes.begin(), bytes.end());
-          id(uart_ean).publish_state(str);
