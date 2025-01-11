@@ -1,0 +1,66 @@
+esphome:
+  on_boot:
+    - priority: 600
+      then:
+        - switch.turn_on: switch_led_green
+
+binary_sensor:
+  - platform: gpio
+    id: switch_read_state
+    internal: true
+    pin:
+      number: GPIO19
+      mode:
+        input: true
+        pullup: true
+    on_press:
+      then:
+        - switch.turn_on: in_or_out
+        - switch.template.publish:
+            id: in_or_out
+            state: ON
+        - delay: 30s
+        - switch.turn_off: in_or_out
+        - switch.template.publish:
+            id: in_or_out
+            state: OFF
+
+output:
+  - platform: ledc
+    pin: GPIO23
+    id: rtttl_out
+
+  - platform: gpio
+    pin: GPIO22
+    id: led_red
+
+  - platform: gpio
+    pin: GPIO21
+    id: led_green
+
+switch:
+  - platform: template
+    id: in_or_out
+    name: In-/Outgoing
+    turn_on_action:
+      - switch.turn_off: switch_led_green
+      - switch.turn_on: switch_led_red
+    turn_off_action:
+      - switch.turn_off: switch_led_red
+      - switch.turn_on: switch_led_green
+
+  - platform: output
+    id: switch_led_red
+    output: led_red
+    internal: true
+
+  - platform: output
+    id: switch_led_green
+    output: led_green
+    internal: true
+
+rtttl:
+  output: rtttl_out
+  on_finished_playback:
+    - logger.log: "Song ended!"
+

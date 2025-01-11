@@ -5,12 +5,16 @@ esphome:
   name_add_mac_suffix: True
   project:
     name: JayGray.EanReader
-    version: "0.0.1"
+    version: "0.0.2"
+
+external_components:
+  - source: github://hlfcode/esphome/esphome@main
+    components: [http_request]
 
 esp32:
-  board: esp32dev
+  board: nodemcu-32s
   framework:
-    type: esp-idf
+    type: arduino
 
 # Enable logging
 logger:
