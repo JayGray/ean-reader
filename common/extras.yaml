@@ -9,7 +9,7 @@ binary_sensor:
     id: switch_read_state
     internal: true
     pin:
-      number: GPIO19
+      number: GPIO18
       mode:
         input: true
         pullup: true
@@ -30,34 +30,122 @@ output:
     pin: GPIO23
     id: rtttl_out
 
-  - platform: gpio
-    pin: GPIO22
+  - platform: ledc
+    pin: GPIO25
     id: led_red
 
-  - platform: gpio
-    pin: GPIO21
+  - platform: ledc
+    pin: GPIO26
     id: led_green
+
+  - platform: ledc
+    pin: GPIO27
+    id: led_blue
+
+light:
+  - platform: rgb
+    id: indicator_light
+    internal: true
+    red: led_red
+    green: led_green
+    blue: led_blue
 
 switch:
   - platform: template
     id: in_or_out
     name: In-/Outgoing
     turn_on_action:
-      - switch.turn_off: switch_led_green
-      - switch.turn_on: switch_led_red
+      - switch.turn_on: switch_led_blue
     turn_off_action:
-      - switch.turn_off: switch_led_red
       - switch.turn_on: switch_led_green
 
-  - platform: output
+  - platform: template
     id: switch_led_red
-    output: led_red
     internal: true
+    turn_on_action:
+      - light.turn_on:
+          id: indicator_light
+          brightness: 50%
+          red: 100%
+          green: 0
+          blue: 0
+          transition_length: 0ms
+    turn_off_action:
+      - light.turn_off:
+          id: indicator_light
+          transition_length: 0ms
 
-  - platform: output
+  - platform: template
     id: switch_led_green
-    output: led_green
     internal: true
+    turn_on_action:
+      - light.turn_on:
+          id: indicator_light
+          brightness: 50%
+          red: 0
+          green: 100%
+          blue: 0
+          transition_length: 0ms
+    turn_off_action:
+      - light.turn_off:
+          id: indicator_light
+          transition_length: 0ms
+
+  - platform: template
+    id: switch_led_blue
+    internal: true
+    turn_on_action:
+      - light.turn_on:
+          id: indicator_light
+          brightness: 50%
+          red: 0
+          green: 0
+          blue: 100%
+          transition_length: 0ms
+    turn_off_action:
+      - light.turn_off:
+          id: indicator_light
+          transition_length: 0ms
+
+  - platform: template
+    id: blink_led_green
+    internal: true
+    turn_on_action:
+      - switch.turn_off: switch_led_green
+      - switch.turn_off: switch_led_blue
+      - delay: 500ms
+      - switch.turn_on: switch_led_green
+      - delay: 500ms
+      - switch.turn_off: switch_led_green
+      - delay: 500ms
+      - switch.turn_on: switch_led_green
+      - if:
+          condition:
+            - switch.is_on: in_or_out
+          then:
+            switch.turn_on: switch_led_blue
+          else:
+            switch.turn_on: switch_led_green
+
+  - platform: template
+    id: blink_led_red
+    internal: true
+    turn_on_action:
+      - switch.turn_off: switch_led_green
+      - switch.turn_off: switch_led_blue
+      - delay: 500ms
+      - switch.turn_on: switch_led_red
+      - delay: 500ms
+      - switch.turn_off: switch_led_red
+      - delay: 500ms
+      - switch.turn_on: switch_led_red
+      - if:
+          condition:
+            - switch.is_on: in_or_out
+          then:
+            switch.turn_on: switch_led_blue
+          else:
+            switch.turn_on: switch_led_green
 
 rtttl:
   output: rtttl_out

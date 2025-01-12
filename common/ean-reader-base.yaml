@@ -5,7 +5,7 @@ esphome:
   name_add_mac_suffix: True
   project:
     name: JayGray.EanReader
-    version: "0.0.2"
+    version: "0.0.3"
 
 external_components:
   - source: github://hlfcode/esphome/esphome@main
@@ -19,8 +19,8 @@ esp32:
 # Enable logging
 logger:
   level: ${log_level}
-
 # Enable Home Assistant API
+
 api:
 
 ota:
