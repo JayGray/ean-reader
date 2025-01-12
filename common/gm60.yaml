@@ -74,7 +74,7 @@ script:
     mode: restart
     then:
       - lambda: |-
-          ESP_LOGD("call_api", "Scanned EAN: %s\n", ean.c_str());
+          ESP_LOGD("Call API", "Scanned EAN: %s\n", ean.c_str());
       - lambda: id(last_ean).publish_state(ean);
       - if:
           condition:
@@ -83,7 +83,7 @@ script:
             - http_request.post:
                 url: !lambda |-
                   std::string url = "${api_url}/" + ean;
-                  ESP_LOGD("ean-push", "API: %s\n", url.c_str());
+                  ESP_LOGD("Add EAN", "API: %s\n", url.c_str());
                   return url;
                 capture_response: true
                 on_response:
@@ -107,7 +107,7 @@ script:
                 method: DELETE
                 url: !lambda |-
                   std::string url = "${api_url}/" + ean;
-                  ESP_LOGD("ean-push", "API: %s\n", url.c_str());
+                  ESP_LOGD("DELETE EAN", "API: %s\n", url.c_str());
                   return url;
                 capture_response: true
                 on_response:
