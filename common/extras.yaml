@@ -33,14 +33,17 @@ output:
   - platform: ledc
     pin: GPIO25
     id: led_red
+    inverted: true
 
   - platform: ledc
     pin: GPIO26
     id: led_green
+    inverted: true
 
   - platform: ledc
     pin: GPIO27
     id: led_blue
+    inverted: true
 
 light:
   - platform: rgb

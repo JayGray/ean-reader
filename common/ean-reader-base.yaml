@@ -39,3 +39,12 @@ button:
   - platform: restart
     icon: mdi:power-cycle
     name: "ESP Reboot"
+
+sensor:
+  - platform: uptime
+    type: seconds
+    name: "${friendly_name} Uptime"
+
+  - platform: wifi_signal
+    name: "${friendly_name} WiFi Signal"
+    update_interval: 60s
